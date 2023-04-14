@@ -11,7 +11,9 @@ public class DisplayManager : MonoBehaviour
     public static DisplayManager instance;
     public TextMeshProUGUI displayObject;
     public TMP_InputField inputObject;
-    public string displayText;
+    public string displayAbilityText;
+    public TextMeshProUGUI statusObject;
+    public string displayStatusText;
     public BattleManager battleStatus;
     
 
@@ -38,7 +40,8 @@ public class DisplayManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        displayObject.text = displayText;
+        displayObject.text = displayAbilityText;
+        statusObject.text = displayStatusText;
         
         if (Input.GetKeyDown(KeyCode.Return) && inputObject.interactable && inputObject.text != "")
         {
@@ -50,10 +53,10 @@ public class DisplayManager : MonoBehaviour
     {
         // Language
         if (name.EndsWith("s")){
-             displayText += "Its " + name + "' turn\n";
+             displayAbilityText += "Its " + name + "' turn\n";
         }
         else{
-            displayText += "Its " + name + "'s turn\n";
+            displayAbilityText += "Its " + name + "'s turn\n";
         }
     }
 
@@ -68,29 +71,38 @@ public class DisplayManager : MonoBehaviour
         Name   :   HP       SP      Status:
         XXXXXXX: 100/100    20/20   Regen(1), AttUp(2)
         YYYYYA : 100/100    20/20   Fuck(1), CRY(2)
-        ZZZZZ  : 100/100    20/20   Pussies(2), GonnaGiveYouUp(3)
+        ZZZZZ  : 100/100    20/20   
 
         Enemies:   HP       Status:
         XXXXXXX: 100/100    Regen(1), AttUp(2)
-        YYYYYA : 100/100    Fuck(1), CRY(2)
-        ZZZZZ  : 100/100    Pussies(2), GonnaGiveYouUp(3)
+        YYYYYA : 100/100    Weak(2), Poisoned(2)
+        ZZZZZ  : 100/100    
 
         */
+        string tempDisplay = "Players\n\n"; 
+        tempDisplay += string.Format("{0,-30} {1,-20} {2,-10}\n",  
+                                        "Name", "Hp", "Status");  
 
-        string tempDisplay = "Players: \n";
-
+        // Loop through every player character and format them.
         for (int i = 0; i < goodies.Count; i++)
         {
-            tempDisplay += goodies[i].name + "\n";
-        }
-        
-        tempDisplay += "\nEnemies: \n";
-        for (int i = 0; i < baddies.Count; i++)
-        {
-            tempDisplay += i+1 + " " + baddies[i].name + "\n";
+            string _healthString = goodies[i].currentHp + "/" + goodies[i].maxhealthPoints;
+            
+            // Note: formating only works if the font is monospaced
+            tempDisplay += string.Format("{0,-30} {1,-20}", goodies[i].name, _healthString) + "\n";
         }
 
-        displayText += tempDisplay + "\n";
+        tempDisplay += "\nEnemies\n\n";
+        tempDisplay += string.Format("{0,-30} {1,-20} {2,-10}\n",  
+                                        "Name", "Hp", "Status"); 
+        // Likewise, loop through every enemy
+        for (int i = 0; i < baddies.Count; i++)
+        {
+            string _healthString = baddies[i].currentHp + "/" + baddies[i].maxhealthPoints;
+            tempDisplay += string.Format("{0,-30} {1,-20}", baddies[i].name, _healthString) + "\n";
+        }
+
+        displayStatusText = tempDisplay;
     }
 
     public void EnableInput()
@@ -116,7 +128,7 @@ public class DisplayManager : MonoBehaviour
             tempDisplay += i+1 +". "+_abilities[i].abilityName + "\n";
         }
 
-        displayText += tempDisplay + "\n";
+        displayAbilityText += tempDisplay + "\n";
     }
 
     public void SetCurrentPlayer(PlayerCharacter player)
@@ -137,13 +149,13 @@ public class DisplayManager : MonoBehaviour
         switch (inputArray[0])
         {
             case "help":
-                displayText += "Input a number representing the ability \n";
+                displayAbilityText += "Input a number representing the ability \n";
                 break;
             case "skip":
-                 displayText += "Please remove all empty spaces in the front";
+                 displayAbilityText += "Please remove all empty spaces in the front";
                 break;
             case " ":
-                displayText += "Please remove all empty spaces in the front";
+                displayAbilityText += "Please remove all empty spaces in the front";
                 break;   
             default:
                 // We check if the first string includes a number and check if its in the count
@@ -166,7 +178,7 @@ public class DisplayManager : MonoBehaviour
                         // Checks if the number is within or not the bounds of 1 and Count.    
                         // theres no check if no enemies is selected.
                         if (inputArray.Count() < 2) { 
-                            displayText += "Incorrect input or syntax\n"; 
+                            displayAbilityText += "Incorrect input or syntax\n"; 
                             break;
                         }
 
@@ -176,10 +188,10 @@ public class DisplayManager : MonoBehaviour
                         {
                              _currentPlayer.OnCorrectSelection(number.Value, ConvertList((Character)BattleManager.instance.enemies[enemyIndex.Value-1]));
                         }
-                        else {displayText += "Incorrect input or syntax\n"; }        
+                        else {displayAbilityText += "Incorrect input or syntax\n"; }        
                     }
                 }
-                else { displayText += "Incorrect input or syntax\n"; }
+                else { displayAbilityText += "Incorrect input or syntax\n"; }
                 break;
         }
 
