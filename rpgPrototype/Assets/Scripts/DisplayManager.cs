@@ -247,4 +247,9 @@ public class DisplayManager : MonoBehaviour
         List<Character> y = new List<Character> { x };
         return y;
     }
+    public void OnBattleEnd(bool isWin)
+    {
+        DisableInput();
+        displayAbilityText = (isWin == true) ? "Victory, Players Win!" : "Defeat, You Lost!";
+    }
 }
