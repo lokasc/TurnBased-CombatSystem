@@ -13,6 +13,7 @@ public class DisplayManager : MonoBehaviour
     public TMP_InputField inputObject;
     public string displayText;
     public BattleManager battleStatus;
+    
 
     private PlayerCharacter _currentPlayer;
 
@@ -133,7 +134,6 @@ public class DisplayManager : MonoBehaviour
         string[] inputArray = input.Split(' ');
 
 
-
         switch (inputArray[0])
         {
             case "help":
@@ -163,8 +163,13 @@ public class DisplayManager : MonoBehaviour
                     }
                     else if (_currentPlayer.abilities[number.Value-1].isAOE == false)
                     {
-                        // Checks if the number is within or not the bounds of 1 and Count.
+                        // Checks if the number is within or not the bounds of 1 and Count.    
                         // theres no check if no enemies is selected.
+                        if (inputArray.Count() < 2) { 
+                            displayText += "Incorrect input or syntax\n"; 
+                            break;
+                        }
+
                         int? enemyIndex = GetNumber(inputArray[1].ToString(), BattleManager.instance.enemies.Count);
                         
                         if (enemyIndex.HasValue)
