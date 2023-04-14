@@ -15,9 +15,8 @@ public class BattleManager : MonoBehaviour
     public bool isBattleEnd = false; // This variable tracks if the battle has ended, used for preventing string from concatinating after the battle ends. 
     public bool waitingForAnimation = false; // This variable tracks whether an animation is currently playing
     public bool waitingForInput = false; // This variable tracks whether we're waiting for player input
-    public int turnIndex; //Our pointer to who has the turn
-    // Note: It doesn't display whos the current player but the next player (due to waiting for player input...we need to refactor)
-
+    public int turnIndex; // Points to the current player.
+    
     void Awake()
     {
         // Singleton pattern
@@ -48,7 +47,7 @@ public class BattleManager : MonoBehaviour
         if (waitingForAnimation || waitingForInput) {
             return;
         }
-
+        CheckWinOrLose();
         if (isBattleEnd) { return; }
 
         if (turnOrder[turnIndex] is PlayerCharacter)
@@ -72,10 +71,9 @@ public class BattleManager : MonoBehaviour
         }
 
         // Check win before next turn increments.
+        
         DisplayManager.instance.ShowStatus(players, enemies, turnOrder, turnIndex);
-        CheckWinOrLose();
-
-        turnIndex++; // Increment turns
+        
         
         // Resets the turns. 
         if (turnIndex >= turnOrder.Count) {
@@ -109,10 +107,12 @@ public class BattleManager : MonoBehaviour
         waitingForInput = false;
     }
 
-    // Completes the turn, no animations;
+    // All characters call this function when the turn ends. 
     public void TurnComplete()
     {
         waitingForInput = false;
+        turnIndex++;
+        // what if we incremented here. 
     }
 
     // Checks if the player has won or lost
