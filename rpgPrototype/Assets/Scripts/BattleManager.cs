@@ -53,7 +53,7 @@ public class BattleManager : MonoBehaviour
             //Debug.Log("It is: " + turnOrder[turnIndex].name + "'s turn");
             
             PlayerCharacter t = (PlayerCharacter)turnOrder[turnIndex];
-            DisplayManager.instance.ShowStatus(players, enemies);
+            DisplayManager.instance.ShowStatus(players, enemies, turnOrder, turnIndex);
             DisplayManager.instance.ShowTurn(t.name);
             
             t.AllowSelect(); // This allows the player to select an attack and see the UI.

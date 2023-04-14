@@ -62,8 +62,9 @@ public class DisplayManager : MonoBehaviour
 
     // This displays the health, name, turn order and everything.
     // Takes the party and the enemies as input
-    public void ShowStatus(List<PlayerCharacter> goodies, List<EnemyCharacter> baddies)
+    public void ShowStatus(List<PlayerCharacter> goodies, List<EnemyCharacter> baddies, List<Character> turnOrder, int turnIndex)
     {
+        string tempDisplay = "";
         /* Example of display:
         
         Turn Order: A | B | C | D | E | F  (Bold if its the current turn)
@@ -79,7 +80,30 @@ public class DisplayManager : MonoBehaviour
         ZZZZZ  : 100/100    
 
         */
-        string tempDisplay = "Players\n\n"; 
+        // Concat the turn order at the top
+        tempDisplay += "Turn Order: ";
+        for (int i = 0; i < turnOrder.Count; i++)
+        {
+            if (i == turnIndex)
+            {
+                // we want to make the name in bold
+                tempDisplay += "<b><i>" + turnOrder[i].name + "</b></i> ";
+            }
+            else
+            {
+                tempDisplay += turnOrder[i].name + " ";
+            }
+
+            // Check if its the last player, we don't want to add "|"
+            if (i == turnOrder.Count - 1) { break; }
+            tempDisplay += "| ";
+        }
+
+        
+
+
+        // Headers for player status
+        tempDisplay += "\nPlayers\n\n"; 
         tempDisplay += string.Format("{0,-30} {1,-20} {2,-10}\n",  
                                         "Name", "Hp", "Status");  
 
