@@ -51,6 +51,10 @@ public class BattleManager : MonoBehaviour
         CheckDeath();
         if (isBattleEnd) { return; }
 
+        // Resets the turns. 
+        if (turnIndex >= turnOrder.Count) {
+            turnIndex = 0;
+        }
 
         if (turnOrder[turnIndex] is PlayerCharacter)
         {
@@ -82,10 +86,7 @@ public class BattleManager : MonoBehaviour
         DisplayManager.instance.ShowStatus(players, enemies, turnOrder, turnIndex);
         
         
-        // Resets the turns. 
-        if (turnIndex >= turnOrder.Count) {
-            turnIndex = 0;
-        }
+        
     }
 
     public void SetCharacters(List<PlayerCharacter> goodies, List<EnemyCharacter> baddies)
@@ -127,8 +128,16 @@ public class BattleManager : MonoBehaviour
     // Called by enemies, the animation part is for expanding into 3D later.
     public void EnemyComplete()
     {
-        waitingForAnimation = false;
+
         DisplayManager.instance.ShowStatus(players, enemies, turnOrder, turnIndex);
+
+        // This line delays enemy turns in real time so players can read what just happened.
+        Invoke("OnEnemyPauseComplete", 2.5f);
+        
+    }
+    public void OnEnemyPauseComplete()
+    {
+        waitingForAnimation = false;
         turnIndex++;
     }
 

@@ -68,6 +68,4 @@ public class EnemyCharacter : Character
         return abilities[x];
     }
 
-    
-
 }

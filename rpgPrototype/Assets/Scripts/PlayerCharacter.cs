@@ -46,26 +46,9 @@ public class PlayerCharacter : Character
         {
             Debug.Log("Using " + abilities[abilityNumber-1].abilityName + " on " + target.name);
 
-            if (target is EnemyCharacter)
-            {
-                EnemyCharacter _target = (EnemyCharacter)target;
-                Ability _ability = abilities[abilityNumber-1];
-
-                // On use is a generic function that may have different kind of stuff per time.
-                // The ability will take in the stats of the player and decide what to do with it.
-                // The ability will also be the one doing the attacking. 
-
-                _ability.OnUse(statistics.strength, target, this); // This deals with the shit regarding abilities 
-            }
-            else if (target is PlayerCharacter)
-            {
-                PlayerCharacter _target = (PlayerCharacter)target;
-                Ability _ability = abilities[abilityNumber-1];
-
-                _ability.OnUse(statistics.strength, target, this);
-            }
-
-            
+            Ability _ability = abilities[abilityNumber-1];
+            _ability.OnUse(statistics.strength, target, this);
+            DisplayManager.instance.WriteAttackString(target, this, _ability);
         }
         
 

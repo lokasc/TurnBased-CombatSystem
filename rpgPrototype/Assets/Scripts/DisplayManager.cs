@@ -110,8 +110,9 @@ public class DisplayManager : MonoBehaviour
         // Loop through every player character and format them.
         for (int i = 0; i < goodies.Count; i++)
         {
-            string _healthString = goodies[i].currentHp + "/" + goodies[i].maxhealthPoints;
+            //string _healthString = goodies[i].currentHp + "/" + goodies[i].maxhealthPoints;
             
+            string _healthString = (goodies[i].currentHp <= 0) ? "Dead" : goodies[i].currentHp + "/" + goodies[i].maxhealthPoints;    
             // Note: formating only works if the font is monospaced
             tempDisplay += string.Format("{0,-30} {1,-20}", goodies[i].name, _healthString) + "\n";
         }
@@ -122,7 +123,8 @@ public class DisplayManager : MonoBehaviour
         // Likewise, loop through every enemy
         for (int i = 0; i < baddies.Count; i++)
         {
-            string _healthString = baddies[i].currentHp + "/" + baddies[i].maxhealthPoints;
+            string _healthString = (baddies[i].currentHp <= 0) ? "Dead" : baddies[i].currentHp + "/" + baddies[i].maxhealthPoints;    
+            //string _healthString = baddies[i].currentHp + "/" + baddies[i].maxhealthPoints;
             tempDisplay += string.Format("{0,-30} {1,-20}", baddies[i].name, _healthString) + "\n";
         }
 
