@@ -48,7 +48,9 @@ public class BattleManager : MonoBehaviour
             return;
         }
         CheckWinOrLose();
+        CheckDeath();
         if (isBattleEnd) { return; }
+
 
         if (turnOrder[turnIndex] is PlayerCharacter)
         {
@@ -64,10 +66,15 @@ public class BattleManager : MonoBehaviour
         {
             Debug.Log("It is: " + turnOrder[turnIndex].name + "'s turn");
 
-
+            EnemyCharacter e = (EnemyCharacter)turnOrder[turnIndex];
 
             // Set waitingForAnimation to true to wait for attack animation
             waitingForAnimation = true;
+
+            // Current we set the animation to false instantly because of no animation
+            // When we do, we write code similar to how the waiting for input code works.  
+            e.OnEnemyTurn(); 
+
         }
 
         // Check win before next turn increments.
@@ -107,12 +114,34 @@ public class BattleManager : MonoBehaviour
         waitingForInput = false;
     }
 
-    // All characters call this function when the turn ends. 
+    // All player characters call this function when the turn ends. 
+    // Temp function to call ignoring animations.
     public void TurnComplete()
     {
         waitingForInput = false;
+        DisplayManager.instance.ShowStatus(players, enemies, turnOrder, turnIndex);
         turnIndex++;
         // what if we incremented here. 
+    }
+
+    // Called by enemies, the animation part is for expanding into 3D later.
+    public void EnemyComplete()
+    {
+        waitingForAnimation = false;
+        DisplayManager.instance.ShowStatus(players, enemies, turnOrder, turnIndex);
+        turnIndex++;
+    }
+
+    public void CheckDeath()
+    {
+        for (int i = 0; i<turnOrder.Count; i++)
+        {
+            if (turnOrder[i].currentHp <= 0)
+            {
+                turnOrder.Remove(turnOrder[i]);
+            }
+        }
+        DisplayManager.instance.ShowStatus(players, enemies, turnOrder, turnIndex);
     }
 
     // Checks if the player has won or lost

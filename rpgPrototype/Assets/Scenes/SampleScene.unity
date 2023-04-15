@@ -1440,16 +1440,72 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 230937753751692620, guid: 40c0e5266248b4535a2c72d833e0e787, type: 3}
       propertyPath: enemies.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 230937753751692620, guid: 40c0e5266248b4535a2c72d833e0e787, type: 3}
+      propertyPath: enemies.Array.data[0].name
+      value: Enemy 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 230937753751692620, guid: 40c0e5266248b4535a2c72d833e0e787, type: 3}
+      propertyPath: enemies.Array.data[1].name
+      value: Enemy 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 230937753751692620, guid: 40c0e5266248b4535a2c72d833e0e787, type: 3}
+      propertyPath: enemies.Array.data[0].decider
+      value: 
+      objectReference: {fileID: 11400000, guid: b4e351d69d3954e6b91d38f32061131b, type: 2}
+    - target: {fileID: 230937753751692620, guid: 40c0e5266248b4535a2c72d833e0e787, type: 3}
+      propertyPath: enemies.Array.data[1].decider
+      value: 
+      objectReference: {fileID: 11400000, guid: b4e351d69d3954e6b91d38f32061131b, type: 2}
     - target: {fileID: 230937753751692620, guid: 40c0e5266248b4535a2c72d833e0e787, type: 3}
       propertyPath: enemies.Array.data[0].currentHp
       value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 230937753751692620, guid: 40c0e5266248b4535a2c72d833e0e787, type: 3}
+      propertyPath: enemies.Array.data[1].currentHp
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 230937753751692620, guid: 40c0e5266248b4535a2c72d833e0e787, type: 3}
+      propertyPath: enemies.Array.data[1].manaPoints
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 230937753751692620, guid: 40c0e5266248b4535a2c72d833e0e787, type: 3}
       propertyPath: enemies.Array.data[0].maxhealthPoints
       value: 100
       objectReference: {fileID: 0}
+    - target: {fileID: 230937753751692620, guid: 40c0e5266248b4535a2c72d833e0e787, type: 3}
+      propertyPath: enemies.Array.data[0].abilities.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 230937753751692620, guid: 40c0e5266248b4535a2c72d833e0e787, type: 3}
+      propertyPath: enemies.Array.data[1].abilities.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 230937753751692620, guid: 40c0e5266248b4535a2c72d833e0e787, type: 3}
+      propertyPath: enemies.Array.data[0].abilities.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: ff133c204c5c642c599d7c0d9e0d57dc, type: 2}
+    - target: {fileID: 230937753751692620, guid: 40c0e5266248b4535a2c72d833e0e787, type: 3}
+      propertyPath: enemies.Array.data[1].abilities.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: ff133c204c5c642c599d7c0d9e0d57dc, type: 2}
+    - target: {fileID: 230937753751692620, guid: 40c0e5266248b4535a2c72d833e0e787, type: 3}
+      propertyPath: enemies.Array.data[1].abilities.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: c1125cfa271984a5b9da41cbca85b5e4, type: 2}
+    - target: {fileID: 230937753751692620, guid: 40c0e5266248b4535a2c72d833e0e787, type: 3}
+      propertyPath: enemies.Array.data[1].abilities.Array.data[2]
+      value: 
+      objectReference: {fileID: 11400000, guid: c1125cfa271984a5b9da41cbca85b5e4, type: 2}
+    - target: {fileID: 230937753751692620, guid: 40c0e5266248b4535a2c72d833e0e787, type: 3}
+      propertyPath: players.Array.data[1].abilities.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: ff133c204c5c642c599d7c0d9e0d57dc, type: 2}
+    - target: {fileID: 230937753751692620, guid: 40c0e5266248b4535a2c72d833e0e787, type: 3}
+      propertyPath: players.Array.data[2].abilities.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: ff133c204c5c642c599d7c0d9e0d57dc, type: 2}
     - target: {fileID: 230937753751692621, guid: 40c0e5266248b4535a2c72d833e0e787, type: 3}
       propertyPath: m_RootOrder
       value: 1

@@ -155,6 +155,12 @@ public class DisplayManager : MonoBehaviour
         displayAbilityText += tempDisplay + "\n";
     }
 
+    // Writes out a log for the attack
+    public void WriteAttackString(Character target, Character self, Ability abilityUsed)
+    {
+        displayAbilityText += self.name + " casted " + abilityUsed.abilityName + " on " + target.name + "\n\n";
+    }
+
     public void SetCurrentPlayer(PlayerCharacter player)
     {
         _currentPlayer = player;
@@ -212,7 +218,7 @@ public class DisplayManager : MonoBehaviour
                         {
                              _currentPlayer.OnCorrectSelection(number.Value, ConvertList((Character)BattleManager.instance.enemies[enemyIndex.Value-1]));
                         }
-                        else {displayAbilityText += "Incorrect input or syntax\n"; }        
+                        else {  displayAbilityText += "Incorrect input or syntax\n"; }        
                     }
                 }
                 else { displayAbilityText += "Incorrect input or syntax\n"; }
