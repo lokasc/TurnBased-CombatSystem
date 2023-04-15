@@ -73,7 +73,7 @@ public class BattleManager : MonoBehaviour
 
             // Current we set the animation to false instantly because of no animation
             // When we do, we write code similar to how the waiting for input code works.  
-            e.OnEnemyTurn(); 
+            e.OnEnemyTurn();
 
         }
 
@@ -132,6 +132,7 @@ public class BattleManager : MonoBehaviour
         turnIndex++;
     }
 
+    // Removes dead people from queue.  
     public void CheckDeath()
     {
         for (int i = 0; i<turnOrder.Count; i++)

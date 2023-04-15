@@ -37,11 +37,13 @@ public class EnemyCharacter : Character
         
     }
     
-    //Called by the battleManager, this decides what the enemy does
+    // Called by the battleManager, this decides what the enemy does
     public void OnEnemyTurn()
     {
         List<Character> targets = new List<Character>();
         Ability _abilitySelected = SelectAttack();
+        
+        // all players are added if the spell is AOE.
         if (_abilitySelected.isAOE == false)
         {
             targets.AddRange(decider.DecideTarget(BattleManager.instance.players));

@@ -203,7 +203,10 @@ public class DisplayManager : MonoBehaviour
                     {
                         _currentPlayer.OnCorrectSelection(number.Value, BattleManager.instance.players.Cast<Character>().ToList());
                     }
-                    else if (_currentPlayer.abilities[number.Value-1].isAOE == false)
+
+                    
+                    // We can refactor this a bit later
+                    else if (_currentPlayer.abilities[number.Value-1].isAOE == false && _currentPlayer.abilities[number.Value-1].isFriendly == false)
                     {
                         // Checks if the number is within or not the bounds of 1 and Count.    
                         // theres no check if no enemies is selected.
@@ -214,9 +217,29 @@ public class DisplayManager : MonoBehaviour
 
                         int? enemyIndex = GetNumber(inputArray[1].ToString(), BattleManager.instance.enemies.Count);
                         
+                        
+
                         if (enemyIndex.HasValue)
                         {
                              _currentPlayer.OnCorrectSelection(number.Value, ConvertList((Character)BattleManager.instance.enemies[enemyIndex.Value-1]));
+                        }
+                        else {  displayAbilityText += "Incorrect input or syntax\n"; }        
+                    }
+                    // If the spell is friendly and is single target
+                    else if (_currentPlayer.abilities[number.Value-1].isAOE == false && _currentPlayer.abilities[number.Value-1].isFriendly == true)
+                    {
+                        // Checks if the number is within or not the bounds of 1 and Count.    
+                        // theres no check if no enemies is selected.
+                        if (inputArray.Count() < 2) { 
+                            displayAbilityText += "Incorrect input or syntax\n"; 
+                            break;
+                        }
+
+                        int? playerIndex = GetNumber(inputArray[1].ToString(), BattleManager.instance.players.Count);
+                        
+                        if (playerIndex.HasValue)
+                        {
+                             _currentPlayer.OnCorrectSelection(number.Value, ConvertList((Character)BattleManager.instance.players[playerIndex.Value-1]));
                         }
                         else {  displayAbilityText += "Incorrect input or syntax\n"; }        
                     }

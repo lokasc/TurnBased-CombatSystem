@@ -60,6 +60,9 @@ public class PlayerCharacter : Character
             else if (target is PlayerCharacter)
             {
                 PlayerCharacter _target = (PlayerCharacter)target;
+                Ability _ability = abilities[abilityNumber-1];
+
+                _ability.OnUse(statistics.strength, target, this);
             }
 
             
