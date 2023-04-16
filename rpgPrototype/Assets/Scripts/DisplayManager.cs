@@ -104,7 +104,7 @@ public class DisplayManager : MonoBehaviour
 
         // Headers for player status
         tempDisplay += "\nPlayers\n\n"; 
-        tempDisplay += string.Format("{0,-30} {1,-20} {2,-10}\n",  
+        tempDisplay += string.Format("{0,-30} {1,-20} {2,-30}\n",  
                                         "Name", "Hp", "Status");  
 
         // Loop through every player character and format them.
@@ -120,9 +120,18 @@ public class DisplayManager : MonoBehaviour
             _healthString = ((goodies[i].currentHp <= goodies[i].maxhealthPoints*0.1) && (goodies[i].currentHp > 0)) ? "<color=red>" + _healthString  + "</color>": _healthString;
 
             
+            string _statusString = "";
+            for (int j = 0; j < goodies[i].statuses.Count; j++)
+            {
+                _statusString += goodies[i].statuses[j].statusName + " ";
+            }
 
-            // Note: formating only works if the font is monospaced
-            tempDisplay += string.Format("{0,-30} {1,-20}", goodies[i].name, _healthString) + "\n";
+            // Note: formating only works if the font is monospaced, 
+            // calculate padding based on length of _healthString without color tags
+            //string padding = new string(' ', _healthString.Length - Regex.Replace(_healthString, @"<[^>]+>", "").Length);
+
+            // format display string with padding
+            tempDisplay += string.Format("{0,-30} {1,-20} {2,-30}", goodies[i].name, _healthString, _statusString) + "\n";
         }
 
         tempDisplay += "\nEnemies\n\n";

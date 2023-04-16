@@ -2,15 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class baseEffect
+[CreateAssetMenu(menuName = "Status/Basic")]
+public class baseEffect : ScriptableObject
 {
     public int effectId;
-    public string effectName;
+    public string statusName;
 
     public int duration;
 
-
-    public void AddStatus(){}
-    public void RemoveStatus(){}
-    public void ChangeStatus(){}
+    
 }

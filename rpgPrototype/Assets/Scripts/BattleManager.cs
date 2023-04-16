@@ -166,12 +166,6 @@ public class BattleManager : MonoBehaviour
         }
         DisplayManager.instance.ShowStatus(players, enemies, turnOrder, turnIndex);
         return isKilled;
-
-        
-        if(isKilled && (turnIndex+1 == turnOrder.Count))
-        {
-            turnIndex -= 2; //Minus two because we increment, increments regardless
-        }
     }
 
     // Increments turn, checks if incrementing is suitable

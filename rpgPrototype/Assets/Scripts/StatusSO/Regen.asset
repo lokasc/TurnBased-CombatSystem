@@ -9,8 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6560b6a24ad314bb9bd36232320b849b, type: 3}
-  m_Name: Heal Logic
+  m_Script: {fileID: 11500000, guid: 31fe9a0ad70934b83b049cacbd5e760d, type: 3}
+  m_Name: Regen
   m_EditorClassIdentifier: 
-  statusEffects:
-  - {fileID: 11400000, guid: 429d501ad2a304bfeb3beda0e64b885a, type: 2}
+  effectId: 0
+  statusName: Regen
+  duration: 0
