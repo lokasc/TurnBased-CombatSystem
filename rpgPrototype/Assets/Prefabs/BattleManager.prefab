@@ -52,6 +52,7 @@ MonoBehaviour:
     manaPoints: 20
     abilities:
     - {fileID: 11400000, guid: ff133c204c5c642c599d7c0d9e0d57dc, type: 2}
+    - {fileID: 11400000, guid: 996118073dcc24cc99de629eaf3d6168, type: 2}
     statistics:
       strength: 0
       intellignece: 0
@@ -61,44 +62,49 @@ MonoBehaviour:
     currentHp: 100
     manaPoints: 20
     abilities:
-    - {fileID: 11400000, guid: c1125cfa271984a5b9da41cbca85b5e4, type: 2}
+    - {fileID: 11400000, guid: ff133c204c5c642c599d7c0d9e0d57dc, type: 2}
+    - {fileID: 11400000, guid: 71a3448d952074b16909f2366d0413ca, type: 2}
     statistics:
       strength: 0
       intellignece: 0
       speed: 0
   - name: Marcus
-    maxhealthPoints: 2200
-    currentHp: 2200
+    maxhealthPoints: 40
+    currentHp: 40
     manaPoints: 20
     abilities:
-    - {fileID: 11400000, guid: c1125cfa271984a5b9da41cbca85b5e4, type: 2}
+    - {fileID: 11400000, guid: ff133c204c5c642c599d7c0d9e0d57dc, type: 2}
+    - {fileID: 11400000, guid: fa16b162e528e480685ba26330977e66, type: 2}
     statistics:
       strength: 0
       intellignece: 0
       speed: 0
   enemies:
-  - name: Bill
+  - name: Enemy 2
     maxhealthPoints: 100
-    currentHp: 100
+    currentHp: 50
     manaPoints: 3
     abilities:
-    - {fileID: 11400000, guid: c1125cfa271984a5b9da41cbca85b5e4, type: 2}
+    - {fileID: 11400000, guid: ff133c204c5c642c599d7c0d9e0d57dc, type: 2}
     statistics:
       strength: 0
       intellignece: 0
       speed: 0
     patternDescription: 
-  - name: Fill
+    decider: {fileID: 11400000, guid: b4e351d69d3954e6b91d38f32061131b, type: 2}
+  - name: Enemy 1
     maxhealthPoints: 100
-    currentHp: 100
-    manaPoints: 0
+    currentHp: 60
+    manaPoints: 3
     abilities:
-    - {fileID: 11400000, guid: c1125cfa271984a5b9da41cbca85b5e4, type: 2}
+    - {fileID: 11400000, guid: ff133c204c5c642c599d7c0d9e0d57dc, type: 2}
     statistics:
       strength: 0
       intellignece: 0
       speed: 0
     patternDescription: 
+    decider: {fileID: 11400000, guid: b4e351d69d3954e6b91d38f32061131b, type: 2}
+  isBattleEnd: 0
   waitingForAnimation: 0
   waitingForInput: 0
   turnIndex: 0

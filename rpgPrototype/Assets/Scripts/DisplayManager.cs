@@ -110,9 +110,17 @@ public class DisplayManager : MonoBehaviour
         // Loop through every player character and format them.
         for (int i = 0; i < goodies.Count; i++)
         {
-            //string _healthString = goodies[i].currentHp + "/" + goodies[i].maxhealthPoints;
+            // Change text when killed
+            string _healthString = (goodies[i].currentHp <= 0) ? "Dead" : goodies[i].currentHp + "/" + goodies[i].maxhealthPoints;
             
-            string _healthString = (goodies[i].currentHp <= 0) ? "Dead" : goodies[i].currentHp + "/" + goodies[i].maxhealthPoints;    
+            // Overhealing green text
+            _healthString = (goodies[i].currentHp > goodies[i].maxhealthPoints) ? "<color=green>" + _healthString  + "</color>":  _healthString;
+            
+            // Danger red text
+            _healthString = ((goodies[i].currentHp <= goodies[i].maxhealthPoints*0.1) && (goodies[i].currentHp > 0)) ? "<color=red>" + _healthString  + "</color>": _healthString;
+
+            
+
             // Note: formating only works if the font is monospaced
             tempDisplay += string.Format("{0,-30} {1,-20}", goodies[i].name, _healthString) + "\n";
         }
@@ -123,7 +131,11 @@ public class DisplayManager : MonoBehaviour
         // Likewise, loop through every enemy
         for (int i = 0; i < baddies.Count; i++)
         {
-            string _healthString = (baddies[i].currentHp <= 0) ? "Dead" : baddies[i].currentHp + "/" + baddies[i].maxhealthPoints;    
+            string _healthString = (baddies[i].currentHp <= 0) ? "Dead" : baddies[i].currentHp + "/" + baddies[i].maxhealthPoints;
+
+            // Low health red text
+            _healthString = ((baddies[i].currentHp <= baddies[i].maxhealthPoints*0.1) && (baddies[i].currentHp > 0)) ? "<color=red>" + _healthString  + "</color>": _healthString;
+
             //string _healthString = baddies[i].currentHp + "/" + baddies[i].maxhealthPoints;
             tempDisplay += string.Format("{0,-30} {1,-20}", baddies[i].name, _healthString) + "\n";
         }
@@ -223,6 +235,9 @@ public class DisplayManager : MonoBehaviour
 
                         if (enemyIndex.HasValue)
                         {
+                            // Check for targeting dead enemies 
+                            if (BattleManager.instance.enemies[enemyIndex.Value-1].currentHp <= 0) {displayAbilityText += "Cannot target dead units\n"; break;}
+
                              _currentPlayer.OnCorrectSelection(number.Value, ConvertList((Character)BattleManager.instance.enemies[enemyIndex.Value-1]));
                         }
                         else {  displayAbilityText += "Incorrect input or syntax\n"; }        
@@ -241,6 +256,8 @@ public class DisplayManager : MonoBehaviour
                         
                         if (playerIndex.HasValue)
                         {
+                            // Prevents targeting dead allies
+                            if (BattleManager.instance.players[playerIndex.Value-1].currentHp <= 0) {displayAbilityText += "Cannot target dead units\n"; break;}
                              _currentPlayer.OnCorrectSelection(number.Value, ConvertList((Character)BattleManager.instance.players[playerIndex.Value-1]));
                         }
                         else {  displayAbilityText += "Incorrect input or syntax\n"; }        

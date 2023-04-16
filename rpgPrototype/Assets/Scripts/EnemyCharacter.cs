@@ -42,14 +42,24 @@ public class EnemyCharacter : Character
     {
         List<Character> targets = new List<Character>();
         Ability _abilitySelected = SelectAttack();
+
+        List<PlayerCharacter> alivePlayers = new List<PlayerCharacter>();
+
+        // Removes dead people from the list of targetable players.
+        foreach(PlayerCharacter _player in BattleManager.instance.players)
+        {
+            if (_player.currentHp > 0) { alivePlayers.Add(_player); }
+        }
         
+        Debug.Log(this.name + " "+ alivePlayers);
+
         // all players are added if the spell is AOE.
         if (_abilitySelected.isAOE == false)
         {
-            targets.AddRange(decider.DecideTarget(BattleManager.instance.players));
+            targets.AddRange(decider.DecideTarget(alivePlayers));
         }
         else{
-            targets.AddRange(BattleManager.instance.players);
+            targets.AddRange(alivePlayers);
         }
         
         for (int i = 0; i<targets.Count; i++)

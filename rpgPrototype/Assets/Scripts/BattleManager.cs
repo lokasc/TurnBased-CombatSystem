@@ -9,6 +9,7 @@ public class BattleManager : MonoBehaviour
     public string Status; 
     public List<PlayerCharacter> players;
     public List<EnemyCharacter> enemies;
+    
     public List<Character> turnOrder;
 
 
@@ -17,6 +18,7 @@ public class BattleManager : MonoBehaviour
     public bool waitingForInput = false; // This variable tracks whether we're waiting for player input
     public int turnIndex; // Points to the current player.
     
+    public int previousCount;
     void Awake()
     {
         // Singleton pattern
@@ -37,7 +39,9 @@ public class BattleManager : MonoBehaviour
         turnOrder.AddRange(players);
         turnOrder.AddRange(enemies);
         
+        
         turnIndex = 0;
+        previousCount = turnOrder.Count;
     }
 
     // Update is called once per frame
@@ -48,10 +52,11 @@ public class BattleManager : MonoBehaviour
             return;
         }
         CheckWinOrLose();
-        CheckDeath();
         if (isBattleEnd) { return; }
 
-        // Resets the turns. 
+         // Resets the turns.
+    
+
         if (turnIndex >= turnOrder.Count) {
             turnIndex = 0;
         }
@@ -68,25 +73,23 @@ public class BattleManager : MonoBehaviour
         }
         else if (turnOrder[turnIndex] is EnemyCharacter)
         {
+            
             Debug.Log("It is: " + turnOrder[turnIndex].name + "'s turn");
 
-            EnemyCharacter e = (EnemyCharacter)turnOrder[turnIndex];
+            DisplayManager.instance.DisableInput();
 
             // Set waitingForAnimation to true to wait for attack animation
             waitingForAnimation = true;
 
             // Current we set the animation to false instantly because of no animation
             // When we do, we write code similar to how the waiting for input code works.  
-            e.OnEnemyTurn();
+
+            // We invoke this to delay the selection of attack
+            Invoke("OnEnemyPrePauseComplete", 1.5f);
 
         }
-
-        // Check win before next turn increments.
         
         DisplayManager.instance.ShowStatus(players, enemies, turnOrder, turnIndex);
-        
-        
-        
     }
 
     public void SetCharacters(List<PlayerCharacter> goodies, List<EnemyCharacter> baddies)
@@ -121,7 +124,7 @@ public class BattleManager : MonoBehaviour
     {
         waitingForInput = false;
         DisplayManager.instance.ShowStatus(players, enemies, turnOrder, turnIndex);
-        turnIndex++;
+        Increment();
         // what if we incremented here. 
     }
 
@@ -132,28 +135,60 @@ public class BattleManager : MonoBehaviour
         DisplayManager.instance.ShowStatus(players, enemies, turnOrder, turnIndex);
 
         // This line delays enemy turns in real time so players can read what just happened.
-        Invoke("OnEnemyPauseComplete", 2.5f);
+        Invoke("OnEnemyPostPauseComplete", 2f);
         
     }
-    public void OnEnemyPauseComplete()
+    public void OnEnemyPostPauseComplete()
     {
         waitingForAnimation = false;
-        turnIndex++;
+        Increment();
     }
 
-    // Removes dead people from queue.  
-    public void CheckDeath()
+    public void OnEnemyPrePauseComplete()
     {
+        // invokes current enemy.
+        EnemyCharacter e = (EnemyCharacter)turnOrder[turnIndex]; 
+        e.OnEnemyTurn();
+    }
+
+    // Removes dead people from queue, checked before incrementation. 
+    public bool CheckDeath()
+    { 
+        bool isKilled = false;
+        previousCount = turnOrder.Count;
         for (int i = 0; i<turnOrder.Count; i++)
         {
             if (turnOrder[i].currentHp <= 0)
             {
                 turnOrder.Remove(turnOrder[i]);
+                isKilled = true;
             }
         }
         DisplayManager.instance.ShowStatus(players, enemies, turnOrder, turnIndex);
+        return isKilled;
+
+        
+        if(isKilled && (turnIndex+1 == turnOrder.Count))
+        {
+            turnIndex -= 2; //Minus two because we increment, increments regardless
+        }
     }
 
+    // Increments turn, checks if incrementing is suitable
+    public void Increment()
+    {
+        bool sthHasDied = CheckDeath();
+
+        // Edge Case Code Fix: If i kill an enemy and the my next turn index is equal to the new count.
+        if(sthHasDied && (turnIndex+1 == turnOrder.Count))
+        {
+            return; 
+        }
+        else
+        {  
+            turnIndex++;
+        }
+    }
     // Checks if the player has won or lost
     public void CheckWinOrLose()
     {
