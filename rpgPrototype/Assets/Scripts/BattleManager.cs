@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 using UnityEngine;
 using System.Linq;
+using UnityEditor;
+using Unity.VisualScripting;
+using UnityEditor.AssetImporters;
 
 public class BattleManager : MonoBehaviour
 {
@@ -20,6 +23,8 @@ public class BattleManager : MonoBehaviour
     public bool waitingForInput = false; // This variable tracks whether we're waiting for player input
     public int turnIndex; // Points to the current player.
     
+    private List<Character> previousList;
+    private int previousTurnIndex;
     public int previousCount;
     void Awake()
     {
@@ -160,6 +165,15 @@ public class BattleManager : MonoBehaviour
     { 
         bool isKilled = false;
         previousCount = turnOrder.Count;
+        previousTurnIndex = turnIndex;
+        previousList = new List<Character>();
+
+        // Create deep copy of turnOrder
+        foreach (Character x in turnOrder)
+        {
+            previousList.Add(x);
+        }
+
         for (int i = 0; i<turnOrder.Count; i++)
         {
             if (turnOrder[i].currentHp <= 0)
@@ -178,6 +192,8 @@ public class BattleManager : MonoBehaviour
     public void Increment()
     {
         bool sthHasDied = CheckDeath();
+        bool someoneDiedBehindCurrent = false;
+        Character nextPersonAlive = null;
 
         // Edge Case Code Fix: If i kill an enemy and the my next turn index is equal to the new count.
         if(sthHasDied && (turnIndex+1 == turnOrder.Count))
@@ -185,6 +201,71 @@ public class BattleManager : MonoBehaviour
             return; 
         }
 
+        // If i kill someone behind me.
+        else if (sthHasDied)
+        {
+            foreach(Character x in previousList)
+            {
+                if (x.currentHp <= 0)
+                {
+                    if (previousList.FindIndex(a => a == x) < turnIndex+1)
+                    {
+                        someoneDiedBehindCurrent = true;
+                        break;
+                    }
+                }
+            }
+
+            if (someoneDiedBehindCurrent)
+            { 
+                // Find the next person alive.
+                // THis check is wrong, so wrong. 
+                
+                // Reorganize the loop so it starts from you to the you - 1. 
+            
+                // Create a copy.
+                List<Character> temp = new List<Character>();
+
+                foreach (Character x in previousList)
+                {
+                    temp.Add(x);
+                }
+                
+                temp.RemoveRange(0, turnIndex);
+                
+                for (int i = 0; i<turnIndex; i++)
+                {
+                    temp.Add(previousList[i]);
+                }
+
+
+                foreach(Character x in temp)
+                {
+                    Debug.Log(x.name);
+                    if (x.currentHp >= 0)
+                    {
+                        if (x != previousList[turnIndex])
+                        {
+                            nextPersonAlive = x;
+                            break;
+                        }
+                    }
+                }
+                
+                // Nobody else is alive, I win? 
+                if (nextPersonAlive == null)
+                {
+                    return;
+                }
+
+                // Find and set the next person alive's index to current next index
+                turnIndex = turnOrder.FindIndex(a => a == nextPersonAlive);
+            }
+            else
+            {
+                turnIndex++;
+            }
+        }
 
         else
         {  
