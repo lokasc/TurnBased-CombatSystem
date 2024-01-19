@@ -1,6 +1,8 @@
-using System.Collections;
+
 using System.Collections.Generic;
+
 using UnityEngine;
+using System.Linq;
 
 public class BattleManager : MonoBehaviour
 {
@@ -36,10 +38,11 @@ public class BattleManager : MonoBehaviour
     {
         // Decide turn order with different speed but for now players start first.
         turnOrder = new List<Character>();
-        turnOrder.AddRange(players);
-        turnOrder.AddRange(enemies);
         
-        
+        // Create Combination of two lists.
+        List<Character> combinedList = players.Cast<Character>().Concat(enemies).ToList();
+        AddToTurnOrder(combinedList);
+
         turnIndex = 0;
         previousCount = turnOrder.Count;
     }
@@ -54,12 +57,13 @@ public class BattleManager : MonoBehaviour
         CheckWinOrLose();
         if (isBattleEnd) { return; }
 
-         // Resets the turns.
+        
     
 
         if (turnIndex >= turnOrder.Count) {
             turnIndex = 0;
         }
+        Debug.LogError(turnIndex + ": " + turnOrder[turnIndex].name);
 
         if (turnOrder[turnIndex] is PlayerCharacter)
         {
@@ -164,6 +168,8 @@ public class BattleManager : MonoBehaviour
                 isKilled = true;
             }
         }
+
+
         DisplayManager.instance.ShowStatus(players, enemies, turnOrder, turnIndex);
         return isKilled;
     }
@@ -178,6 +184,8 @@ public class BattleManager : MonoBehaviour
         {
             return; 
         }
+
+
         else
         {  
             turnIndex++;
@@ -215,5 +223,14 @@ public class BattleManager : MonoBehaviour
         DisplayManager.instance.OnBattleEnd(isWin);
         // Deletes this object
         Destroy(this);
+    }
+
+
+    // Dynamic add order, sort by speed values.
+    public void AddToTurnOrder(List<Character> tempList)
+    {
+        // if y is larger than x, add y
+        tempList.Sort((x, y) => y.statistics.speed.CompareTo(x.statistics.speed));
+        turnOrder.AddRange(tempList);
     }
 }
