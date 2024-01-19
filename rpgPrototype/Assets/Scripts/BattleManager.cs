@@ -59,11 +59,10 @@ public class BattleManager : MonoBehaviour
         if (waitingForAnimation || waitingForInput) {
             return;
         }
-        CheckWinOrLose();
-        if (isBattleEnd) { return; }
 
-        
-    
+        CheckWinOrLose();
+
+        if (isBattleEnd) { return; }
 
         if (turnIndex >= turnOrder.Count) {
             turnIndex = 0;
@@ -81,8 +80,7 @@ public class BattleManager : MonoBehaviour
             waitingForInput = true; // the turn is over when player selects.
         }
         else if (turnOrder[turnIndex] is EnemyCharacter)
-        {
-            
+        {   
             Debug.Log("It is: " + turnOrder[turnIndex].name + "'s turn");
 
             DisplayManager.instance.DisableInput();
@@ -95,7 +93,6 @@ public class BattleManager : MonoBehaviour
 
             // We invoke this to delay the selection of attack
             Invoke("OnEnemyPrePauseComplete", 1.5f);
-
         }
         
         DisplayManager.instance.ShowStatus(players, enemies, turnOrder, turnIndex);
