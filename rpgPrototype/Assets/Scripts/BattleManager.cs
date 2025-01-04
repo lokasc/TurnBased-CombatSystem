@@ -1,6 +1,4 @@
-
 using System.Collections.Generic;
-
 using UnityEngine;
 using System.Linq;
 using UnityEditor;
@@ -137,8 +135,8 @@ public class BattleManager : MonoBehaviour
     // Called by enemies, the animation part is for expanding into 3D later.
     public void EnemyComplete()
     {
-
         DisplayManager.instance.ShowStatus(players, enemies, turnOrder, turnIndex);
+
 
         // This line delays enemy turns in real time so players can read what just happened.
         Invoke("OnEnemyPostPauseComplete", 2f);
@@ -146,6 +144,8 @@ public class BattleManager : MonoBehaviour
     }
     public void OnEnemyPostPauseComplete()
     {
+        EnemyCharacter e = (EnemyCharacter)turnOrder[turnIndex];
+        e.ProcessStatusEffectPostTurn();
         waitingForAnimation = false;
         Increment();
     }

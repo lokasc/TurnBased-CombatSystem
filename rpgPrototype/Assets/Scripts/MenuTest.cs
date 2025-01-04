@@ -39,4 +39,9 @@ public class MenuTest : MonoBehaviour
         }
         isLeft = !isLeft;
     }
+
+    public void PopulateMenu()
+    {
+        
+    }
 }

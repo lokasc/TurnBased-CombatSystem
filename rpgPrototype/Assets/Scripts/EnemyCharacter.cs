@@ -40,6 +40,8 @@ public class EnemyCharacter : Character
     // Called by the battleManager, this decides what the enemy does
     public void OnEnemyTurn()
     {
+        ProcessStatusEffectPreTurn();
+
         List<Character> targets = new List<Character>();
         Ability _abilitySelected = SelectAttack();
 

@@ -55,6 +55,12 @@ public class Character
         // We probably want to add checks such as defensive statuses that block things 
         // Architecture (Offensive will be on attacking character side and defensive would be recieving damage side)
         statuses.Add(status);
+        status.OnAdd();
+    }
+
+    public void RemoveStatus(baseEffect status)
+    {
+        status.OnRemove();
     }
 
     // First we go through the ability logic and how much damage it does or the abilities.
@@ -64,12 +70,27 @@ public class Character
     public void Attack(float damage, Character target, List<baseEffect> statuses = null)
     {
         target.TakeDamage(damage);
-        if (statuses == null) {return;}
+    }
+
+    // Status Effect Processing based on start and end turn
+    public virtual void ProcessStatusEffectPreTurn()
+    {
         foreach(baseEffect _status in statuses)
         {
-            target.AddStatus(_status);
+            if (_status.statusProcessType != baseEffect.ProcessType.TurnStart) { return; }
+            _status.Process(this);
         }
     }
+
+    public virtual void ProcessStatusEffectPostTurn()
+    {
+        foreach(baseEffect _status in statuses)
+        {
+            if (_status.statusProcessType != baseEffect.ProcessType.TurnEnd) { return; }
+            _status.Process(this);
+        }
+    }
+    
 }
 
 
